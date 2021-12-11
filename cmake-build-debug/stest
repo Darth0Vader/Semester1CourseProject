@@ -1,0 +1,50 @@
+7
+0,0,A,1,0,stest
+0,1, ,0,0,stest
+0,2,C,0,1,stest
+0,3,A,0,1,stest
+0,4, ,0,0,stest
+0,5, ,0,0,stest
+0,6, ,0,0,stest
+1,0,C,0,1,stest
+1,1, ,0,0,stest
+1,2, ,0,0,stest
+1,3, ,0,0,stest
+1,4, ,0,0,stest
+1,5, ,0,0,stest
+1,6, ,0,0,stest
+2,0, ,7,2,stest
+2,1, ,6,2,stest
+2,2, ,0,0,stest
+2,3,D,0,1,stest
+2,4,G,0,1,stest
+2,5, ,2,2,stest
+2,6, ,0,0,stest
+3,0,D,0,1,stest
+3,1,E,0,1,stest
+3,2, ,0,0,stest
+3,3, ,0,0,stest
+3,4,C,0,1,stest
+3,5, ,0,0,stest
+3,6, ,0,0,stest
+4,0, ,0,0,stest
+4,1,C,4,3,stest
+4,2, ,0,0,stest
+4,3, ,0,0,stest
+4,4,F,0,1,stest
+4,5, ,0,0,stest
+4,6, ,3,2,stest
+5,0, ,5,2,stest
+5,1, ,0,0,stest
+5,2,E,0,1,stest
+5,3, ,3,2,stest
+5,4,A,0,1,stest
+5,5, ,0,0,stest
+5,6, ,0,0,stest
+6,0,G,0,1,stest
+6,1, ,0,0,stest
+6,2,A,0,1,stest
+6,3, ,0,0,stest
+6,4, ,0,0,stest
+6,5, ,0,0,stest
+6,6, ,4,2,stest
