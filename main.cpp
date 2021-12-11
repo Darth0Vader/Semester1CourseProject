@@ -8,9 +8,11 @@
 
 int Menu();
 
+int GetSaved();
+
 int GameOver(BoardStructure **board, int);
 
-//int SaveBoard(BoardStructure **board, int);
+int SaveBoard(BoardStructure **board, int);
 
 int BoardChecker(BoardStructure **board, int, int, int);
 
@@ -24,7 +26,7 @@ BoardStructure **LoadBoard(BoardStructure **board, int);
 
 int WriteRecord();
 
-//int GetSaved();
+int GetSaved();
 
 int GetRecords();
 
@@ -49,73 +51,71 @@ int WriteRecord() {
     return 0;
 }
 
-//int GetSaved() {
-//    BoardStructure **board;
-//    FILE *file = fopen("saved.DarthVader", "r");
-//    int i = 0;
-//    char buffer[256];
-//    char fileName[20];
-//    while (fgets(buffer, 256, file)) {
-//        printf("%d)%s\n", ++i, buffer);
-//    }
-//    printf("Enter name:");
-//    scanf(" %s", &fileName);
-//    fclose(file);
-//    file = fopen(fileName, "r");
-//    int counter = 0, x, y, num = 0, z = 0, isConst, size = 0;
-//    char charac;
-//    int *pnts[4];
-//    pnts[0] = &x;
-//    pnts[1] = &y;
-//    pnts[2] = NULL;
-//    pnts[3] = &num;
-//    pnts[4] = &isConst;
-//    int *putter;
-//    int a = 0;
-//    while (fgets(buffer, 256, file)) {
-//        if (a == 0) {
-//            size = buffer[0] - '0';
-//            board = (BoardStructure **) malloc(size * sizeof(BoardStructure));
-//            char buffer[256];
-//            a++;
-//        }
-//        for (int i = 0; i < 256; i++) {
-//            if (buffer[i] == ',')
-//                counter = i;
-//            if (counter != 0) {
-//                if (z == 2) {
-//                    if (buffer[counter - 1] != ' ')
-//                        charac = buffer[counter - 1];
-//                    z++;
-//                } else {
-//                    putter = pnts[z];
-//                    z++;
-//                    if (buffer[counter - 1] != '_')
-//                        *putter = buffer[counter - 1] - '0';
-//                }
-//                counter = 0;
-//            }
-//            if (buffer[i] == '\0')
-//                break;
-//        }
-//        z = 0;
-//        board[x][y].Number = num;
-//        board[x][y].Character = charac;
-//        board[x][y].isConst = num == 0 ? 1 : charac == ' ' ? 2 : 3;
-//        num = 0;
-//        charac = ' ';
-//        x = 0;
-//        y = 0;
-//    }
-//    for (int j = 0; j < size; ++j) {
-//        for (int k = 0; k < size; ++k) {
-//            printf("%c %d\n", board[j][k].Character, board[j][k].Number);
-//        }
-//    }
-//    fclose(file);
-//    GameEngine(board, size);
-//    return 0;
-//}
+int GetSaved() {
+    struct BoardStructure **board;
+    FILE *file = fopen("saved.DarthVader", "r");
+    int i = 0;
+    char buffer[256];
+    char fileName[20] = "test";
+    while (fgets(buffer, 256, file)) {
+        printf("%d)%s\n", ++i, buffer);
+    }
+    printf("Enter name:");
+    scanf(" %s", &fileName);
+    fclose(file);
+    file = fopen(fileName, "r");
+    int counter = 0, x, y, num = 0, z = 0, isConst, size = 0;
+    char charac;
+    int *pnts[5];
+    pnts[0] = &x;
+    pnts[1] = &y;
+    pnts[2] = NULL;
+    pnts[3] = &num;
+    pnts[4] = &isConst;
+    int *putter;
+    int a = 0;
+    while (fgets(buffer, 256, file)) {
+        size = buffer[0] - '0';
+        board = (struct BoardStructure **) malloc(size * sizeof(struct BoardStructure));
+        for (int i = 0; i < size; ++i) {
+            board[i] = (struct BoardStructure *) malloc(size * sizeof(struct BoardStructure));
+        }
+        break;
+    }
+    while (fgets(buffer, 256, file)) {
+        for (int i = 0; i < 256; i++) {
+            if (buffer[i] == ',')
+                counter = i;
+            if (counter != 0) {
+                if (z == 2) {
+                    if (buffer[counter - 1] != ' ')
+                        charac = buffer[counter - 1];
+                    z++;
+                } else {
+                    putter = pnts[z];
+                    z++;
+                    if (buffer[counter - 1] != '_')
+                        *putter = buffer[counter - 1] - '0';
+                }
+                counter = 0;
+            }
+            if (buffer[i] == '\0')
+                break;
+        }
+        z = 0;
+        board[x][y].Number = num;
+        board[x][y].Character = charac;
+        board[x][y].isConst = isConst;
+        num = 0;
+        charac = ' ';
+        isConst = 0;
+        x = 0;
+        y = 0;
+    }
+    fclose(file);
+    GameEngine(board, size);
+    return 0;
+}
 
 int GetRecords() {
     char buffer[256];
@@ -127,50 +127,50 @@ int GetRecords() {
     return 0;
 }
 
-//int SaveBoard(BoardStructure **board, int size) {
-//    printf("Enter file name(20-symbols limited):");
-//    char filename[20];
-//    scanf(" %s", &filename);
-//    FILE *file = fopen("saved.DarthVader", "a");
-//    if (file == NULL)
-//        file = fopen("saved.DarthVader", "w+");
-//    fprintf(file, "%s\n", filename);
-//    char buffer[10];
-//    FILE *save = fopen(filename, "w+");
-//    for (int i = 0; i < size; ++i) {
-//        if (i == 0)
-//            fprintf(save, "%d\n", size);
-//        for (int j = 0; j < size; ++j) {
-//            buffer[0] = i + '0';
-//            buffer[1] = ',';
-//            buffer[2] = j + '0';
-//            buffer[3] = ',';
-//            buffer[4] = board[i][j].Character;
-//            buffer[5] = ',';
-//            buffer[6] = board[i][j].Number + '0';
-//            buffer[7] = ',';
-//            buffer[8] = board[i][j].isConst + '0';
-//            buffer[9] = ',';
-//            fprintf(save, "%s\n", buffer);
-//        }
-//    }
-//    fclose(save);
-//    return 0;
-//}
+int SaveBoard(BoardStructure **board, int size) {
+    printf("Enter file name(20-symbols limited):");
+    char filename[20];
+    scanf(" %s", &filename);
+    FILE *file = fopen("saved.DarthVader", "a");
+    if (file == NULL)
+        file = fopen("saved.DarthVader", "w+");
+    fprintf(file, "%s\n", filename);
+    char buffer[10];
+    FILE *save = fopen(filename, "w+");
+    for (int i = 0; i < size; ++i) {
+        if (i == 0)
+            fprintf(save, "%d\n", size);
+        for (int j = 0; j < size; ++j) {
+            buffer[0] = i + '0';
+            buffer[1] = ',';
+            buffer[2] = j + '0';
+            buffer[3] = ',';
+            buffer[4] = board[i][j].Character;
+            buffer[5] = ',';
+            buffer[6] = board[i][j].Number + '0';
+            buffer[7] = ',';
+            buffer[8] = board[i][j].isConst + '0';
+            buffer[9] = ',';
+            fprintf(save, "%s\n", buffer);
+        }
+    }
+    fclose(save);
+    return 0;
+}
 
 int GameEngine(BoardStructure **board, int size) {
     int x = 0, y = 0, num = 0;
     char charac;
     while (true) {
         BoardToConsole(board, size);
-        printf("Enter y or -1 to quit:");
+        printf("Enter y or -1 to quit\n -2 for save game:");
         scanf("%d", &x);
         if (x == -1)
             break;
-//        if (x == -2) {
-//            SaveBoard(board, size);
-//            return 0;
-//        }
+        if (x == -2) {
+            SaveBoard(board, size);
+            return 0;
+        }
         printf("Enter x:");
         scanf("%d", &y);
         printf("Enter value (A1):");
@@ -206,7 +206,7 @@ int GameEngine(BoardStructure **board, int size) {
 
 int Menu() {
     while (true) {
-        printf("1-start new game.\n2-records\n3-get rules\n4-exit:");
+        printf("1-start new game.\n2-records\n3-get rules\n4-for load game\n5-exit:");
         int choise = 0;
         scanf("%d", &choise);
         system("cls");
@@ -224,6 +224,9 @@ int Menu() {
             }
                 break;
             case 4: {
+                GetSaved();
+            }
+            case 5: {
                 return 0;
             }
                 break;
