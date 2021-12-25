@@ -6,8 +6,6 @@
 #include "BoardStruct.h";
 #include "conio.h";
 
-int Menu();
-
 int GetSaved();
 
 int GameOver(BoardStructure **board, int);
@@ -34,7 +32,34 @@ int StartGame();
 
 int main() {
     printf("Hello my friend!\nWelcome to magic console!\n");
-    return Menu();
+    while (true) {
+        printf("1-start new game.\n2-records\n3-get rules\n4-for load game\n5-exit:");
+        int choise = 0;
+        scanf("%d", &choise);
+        system("cls");
+        switch (choise) {
+            case 1: {
+                StartGame();
+            }
+                break;
+            case 2: {
+                GetRecords();
+            }
+                break;
+            case 3: {
+
+            }
+                break;
+            case 4: {
+                GetSaved();
+            }
+            case 5: {
+                return 0;
+            }
+                break;
+        }
+    }
+    return 0;
 }
 
 int WriteRecord() {
@@ -66,13 +91,6 @@ int GetSaved() {
     file = fopen(fileName, "r");
     int counter = 0, x, y, num = 0, z = 0, isConst, size = 0;
     char charac;
-    int *pnts[5];
-    pnts[0] = &x;
-    pnts[1] = &y;
-    pnts[2] = NULL;
-    pnts[3] = &num;
-    pnts[4] = &isConst;
-    int *putter;
     int a = 0;
     while (fgets(buffer, 256, file)) {
         size = buffer[0] - '0';
@@ -82,35 +100,12 @@ int GetSaved() {
         }
         break;
     }
-    while (fgets(buffer, 256, file)) {
-        for (int i = 0; i < 256; i++) {
-            if (buffer[i] == ',')
-                counter = i;
-            if (counter != 0) {
-                if (z == 2) {
-                    if (buffer[counter - 1] != ' ')
-                        charac = buffer[counter - 1];
-                    z++;
-                } else {
-                    putter = pnts[z];
-                    z++;
-                    if (buffer[counter - 1] != '_')
-                        *putter = buffer[counter - 1] - '0';
-                }
-                counter = 0;
-            }
-            if (buffer[i] == '\0')
-                break;
-        }
-        z = 0;
+    char *s;
+    while (!feof(file)) {
+        fscanf(file, "%d,%d,%c,%d,%d,%s", &x, &y, &charac, &num, &isConst, &s);
         board[x][y].Number = num;
         board[x][y].Character = charac;
         board[x][y].isConst = isConst;
-        num = 0;
-        charac = ' ';
-        isConst = 0;
-        x = 0;
-        y = 0;
     }
     fclose(file);
     GameEngine(board, size);
@@ -200,36 +195,6 @@ int GameEngine(BoardStructure **board, int size) {
             printf("Congratulations!!!\n");
             WriteRecord();
             return 0;
-        }
-    }
-}
-
-int Menu() {
-    while (true) {
-        printf("1-start new game.\n2-records\n3-get rules\n4-for load game\n5-exit:");
-        int choise = 0;
-        scanf("%d", &choise);
-        system("cls");
-        switch (choise) {
-            case 1: {
-                StartGame();
-            }
-                break;
-            case 2: {
-                GetRecords();
-            }
-                break;
-            case 3: {
-
-            }
-                break;
-            case 4: {
-                GetSaved();
-            }
-            case 5: {
-                return 0;
-            }
-                break;
         }
     }
 }
@@ -351,40 +316,12 @@ BoardStructure **LoadBoard(BoardStructure **board, int size) {
     char buffer[256];
     int counter = 0, x, y, num = 0, z = 0;
     char charac;
-    int *pnts[3];
-    pnts[0] = &x;
-    pnts[1] = &y;
-    pnts[2] = NULL;
-    pnts[3] = &num;
-    int *putter;
-    while (fgets(buffer, 256, file)) {
-        for (int i = 0; i < 256; i++) {
-            if (buffer[i] == ',')
-                counter = i;
-            if (counter != 0) {
-                if (z == 2) {
-                    if (buffer[counter - 1] != '_')
-                        charac = buffer[counter - 1];
-                    z++;
-                } else {
-                    putter = pnts[z];
-                    z++;
-                    if (buffer[counter - 1] != '_')
-                        *putter = buffer[counter - 1] - '0';
-                }
-                counter = 0;
-            }
-            if (buffer[i] == '\0')
-                break;
-        }
-        z = 0;
+    printf("Hello\n");
+    while (!feof(file)) {
+        fscanf(file, "%d,%d,%c,%d,", &x, &y, &charac, &num);
         board[x][y].Number = num;
         board[x][y].Character = charac;
-        board[x][y].isConst = num == 0 ? 1 : charac == ' ' ? 2 : 3;
-        num = 0;
-        charac = ' ';
-        x = 0;
-        y = 0;
+        board[x][y].isConst = num != 0 && charac == '0' ? 2 : charac != '0' && num == 0 ? 1 : 3;
     }
     return board;
 }
